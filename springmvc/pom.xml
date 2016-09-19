@@ -1,37 +1,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.imooc.demo</groupId>
+	<groupId>com.xyang.demo</groupId>
 	<artifactId>springmvc</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springmvc Maven Webapp</name>
+	<name>springmvc</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<org.springframework.version>4.0.0.RELEASE</org.springframework.version>
+		<org.springframework.version>4.3.2.RELEASE</org.springframework.version>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
 
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>4.3.2.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
 
 		<dependency>
@@ -49,17 +40,47 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
-			<version>4.3.2.RELEASE</version>
+			<version>${org.springframework.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.5.1</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.11</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.groboutils</groupId>
+			<artifactId>groboutils-core</artifactId>
+			<version>5</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.8</version>
+			<version>4.12</version>
 		</dependency>
-
 	</dependencies>
-
 	<build>
 		<finalName>springmvc</finalName>
 		<plugins>
@@ -74,4 +95,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<!-- 资源加载 -->
+	<repositories>
+		<repository>
+			<id>opensymphony-releases</id>
+			<name>Opensymphony Releases</name>
+			<url>https://oss.sonatype.org/content/repositories/opensymphony-releases</url>
+		</repository>
+	</repositories>
 </project>
