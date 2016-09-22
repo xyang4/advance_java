@@ -1,18 +1,19 @@
-package com.xyang.crawler4j.demo;
+package com.xyang.crawler4j.hnz.entry;
 
 import java.util.Date;
 import java.util.Set;
 
 /**
- * @author 分类实体类
+ * @author 作物分类实体类
  *
  */
-public class Category {
+public class PlantsCategory {
 	private String title;
 	private String url;
-	private Category parent;// 父类
-	private Set<Category> child;// 子类
+	private PlantsCategory parent;// 父类
+	private Set<PlantsCategory> child;// 子类
 	private Date createTime;// 创建时间
+	private String createTimeStr;
 
 	public String getTitle() {
 		return title;
@@ -24,28 +25,27 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [title=" + title + ", url=" + url + ", parent="
-				+ parent + ", child=" + child + ", createTime=" + createTime
-				+ "]";
+		return "PlantsCategory [title=" + title + ", url=" + url + ", parent=" + parent + ", child=" + child
+				+ ", createTime=" + createTime + ", createTimeStr=" + createTimeStr + "]";
 	}
 
 	public String getUrl() {
 		return url;
 	}
 
-	public Category getParent() {
+	public PlantsCategory getParent() {
 		return parent;
 	}
 
-	public void setParent(Category parent) {
+	public void setParent(PlantsCategory parent) {
 		this.parent = parent;
 	}
 
-	public Set<Category> getChild() {
+	public Set<PlantsCategory> getChild() {
 		return child;
 	}
 
-	public void setChild(Set<Category> child) {
+	public void setChild(Set<PlantsCategory> child) {
 		this.child = child;
 	}
 
@@ -59,5 +59,13 @@ public class Category {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public String getCreateTimeStr() {
+		return createTimeStr;
+	}
+
+	public void setCreateTimeStr(String createTimeStr) {
+		this.createTimeStr = createTimeStr;
 	}
 }
