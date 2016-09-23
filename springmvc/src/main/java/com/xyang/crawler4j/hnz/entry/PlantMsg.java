@@ -8,7 +8,29 @@ import java.util.Date;
  */
 public class PlantMsg {
 	private String imageUrl;// 图片地址
+	private String linkUrl;//连接地址
+	public String getLinkUrl() {
+		return linkUrl;
+	}
+
+	public void setLinkUrl(String linkUrl) {
+		this.linkUrl = linkUrl;
+	}
+
 	private String title;// 资讯标题
+	private String contentHtml;//资讯html内容 
+	public String getContentHtml() {
+		return contentHtml;
+	}
+
+	public void setContentHtml(String contentHtml) {
+		this.contentHtml = contentHtml;
+	}
+
+	public Date getPublishTime() {
+		return publishTime;
+	}
+
 	private String contnet;// 资讯内容
 	private Date publishTime;
 	private String publishTimeStr;// 发布时间

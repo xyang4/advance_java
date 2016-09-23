@@ -1,6 +1,7 @@
 package com.xyang.crawler4j.hnz.entry;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,6 +13,16 @@ public class PlantsCategory {
 	private String url;
 	private PlantsCategory parent;// 父类
 	private Set<PlantsCategory> child;// 子类
+	private Set<String> childsUrls;//子类地址集
+
+	public Set<String> getChildsUrls() {
+		return childsUrls;
+	}
+
+	public void setChildsUrls(Set<String> childsUrls) {
+		this.childsUrls = childsUrls;
+	}
+
 	private Date createTime;// 创建时间
 	private String createTimeStr;
 
