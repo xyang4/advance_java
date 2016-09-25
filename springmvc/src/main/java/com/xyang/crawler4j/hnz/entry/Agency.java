@@ -1,45 +1,105 @@
 package com.xyang.crawler4j.hnz.entry;
 
-/**
- * @描述 经销商实体类
- * @author IBM
- *
- */
+import java.util.Date;
+
 public class Agency {
-	private String name;
-	private String linkmanName;
-	private String tel;
-	private String address;
+    private Integer id;
 
-	public String getName() {
-		return name;
-	}
+    private String linkNo;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String name;
 
-	public String getLinkmanName() {
-		return linkmanName;
-	}
+    private String linkmanName;
 
-	public void setLinkmanName(String linkmanName) {
-		this.linkmanName = linkmanName;
-	}
+    private String tel;
 
-	public String getTel() {
-		return tel;
-	}
+    private String address;
 
-	public void setTel(String tel) {
-		this.tel = tel;
-	}
+    private Date createTime;
 
-	public String getAddress() {
-		return address;
-	}
+    private String createTimeStr;
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+    private Integer regionId;
+
+    private String regionName;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getLinkNo() {
+        return linkNo;
+    }
+
+    public void setLinkNo(String linkNo) {
+        this.linkNo = linkNo == null ? null : linkNo.trim();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    public String getLinkmanName() {
+        return linkmanName;
+    }
+
+    public void setLinkmanName(String linkmanName) {
+        this.linkmanName = linkmanName == null ? null : linkmanName.trim();
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel == null ? null : tel.trim();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address == null ? null : address.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr == null ? null : createTimeStr.trim();
+    }
+
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName == null ? null : regionName.trim();
+    }
 }
