@@ -55,7 +55,9 @@ public class JsoupTest {
 		// jxshaInfotest();
 		// PlantMsg msg = grabPlantMsgByNewsUrl(base_url +
 		// "news/20160718/172236.html");
-		grabPlantMsgByNewsUrlTest(base_url + "news/20160718/172236.html");
+		Map<String, Set<String>> areaMap = grabAreaName(base_url + jxs_url);
+		System.out.println(areaMap);
+//		grabPlantMsgByNewsUrlTest(base_url + "news/20160718/172236.html");
 	}
 
 	private static void grabPlantMsgByNewsUrlTest(String newsUrl) throws Exception {
