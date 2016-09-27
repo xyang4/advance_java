@@ -1,7 +1,6 @@
 package com.xyang.crawler4j.hnz;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,13 +10,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.junit.Test;
 
 import com.xyang.crawler4j.hnz.entry.Agency;
 import com.xyang.crawler4j.hnz.entry.Page;
 import com.xyang.crawler4j.hnz.entry.PlantMsg;
 import com.xyang.crawler4j.hnz.entry.PlantsCategory;
 import com.xyang.utils.CodingUtils;
+import com.xyang.utils.HttpRequestResult;
+import com.xyang.utils.HttpRequestUtils;
 
 /*
  * 
@@ -76,12 +76,21 @@ public class JsoupTest {
 		}
 		System.out.println(sb.toString());*/
 	}
-
-	@Test
-	private static void jxshaInfotest() throws Exception, UnsupportedEncodingException {
-		String province = "山西";
-		Page<Set<String>> page = grabJxshaInfoUrlsByProvince(CodingUtils.toBrowserCode(province, null));// 山西
-		System.out.println("总记录条数:" + page.getTotal() + "\n实际获取条数:" + page.getEntry().size());
+	private static void getAreaNameWithThreadTest() {
+		for (int i = 0; i < 100; i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Map<String, Set<String>> map = null;
+					try {
+						map = grabAreaName(base_url + jxs_url);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				System.out.println(Thread.currentThread().getName()+"结果: "+map);
+				}
+			}).start();
+		}
 	}
 
 	private static void plantNewsExe() throws Exception {
@@ -104,8 +113,7 @@ public class JsoupTest {
 		// 1.根据大区分别获得省份 按map<'大区名','省份名set'>
 		Map<String, Set<String>> areaMap = grabAreaName(base_url + jxs_url);
 		System.out.println(areaMap);
-		System.out.println("==============================================================================");
-		for (String name : areaMap.keySet()) {
+		for (final String name : areaMap.keySet()) {
 			Set<String> names = areaMap.get(name);
 			System.out.println("###    大区名称:" + name + "   ###");
 			for (String province : names) {
@@ -118,8 +126,7 @@ public class JsoupTest {
 				 * }}).start(); Thread.sleep(1000);
 				 */
 				System.out.println("###    省份名称:" + province);
-				Page<Set<String>> page = grabJxshaInfoUrlsByProvince(CodingUtils.toBrowserCode(province, null));// 山西
-				System.out.println("总记录  条数:" + page.getTotal() + "\n实际获取条数:" + page.getEntry().size());
+				grabJxshaInfoUrlsByProvince(CodingUtils.toBrowserCode(province,null));// 山西
 			}
 		}
 		// 2.按省份获取信息
@@ -131,17 +138,23 @@ public class JsoupTest {
 	 * @return
 	 * @throws IOException
 	 */
-	private static Map<String, Set<String>> grabAreaName(String indexUrl) throws IOException {
+
+	private static Map<String, Set<String>> grabAreaName(String indexUrl)
+			throws IOException {
 		Map<String, Set<String>> map = new HashMap<>();
-		Document doc = Jsoup.connect(indexUrl).get();
-		Elements root = doc.select(".list1");
-		for (Element e : root) {
-			String bigAreaName = e.select(".aa5").html();
-			Set<String> set = new HashSet<>();
-			for (Element p : e.select(".b7")) {
-				set.add(p.attr("href").split("=")[1]);
+		HttpRequestResult result = HttpRequestUtils.doGet(indexUrl, "gb2312");
+		if (200 == result.getCode()) {
+			// Document doc = Jsoup.connect(indexUrl).get();
+			Document doc = Jsoup.parse(result.getContent());
+			Elements root = doc.select(".list1");
+			for (Element e : root) {
+				String bigAreaName = e.select(".aa5").html();
+				Set<String> set = new HashSet<>();
+				for (Element p : e.select(".b7")) {
+					set.add(p.attr("href").split("=")[1]);
+				}
+				map.put(bigAreaName, set);
 			}
-			map.put(bigAreaName, set);
 		}
 		return map;
 	}
@@ -151,7 +164,8 @@ public class JsoupTest {
 	 *            二级分类链接
 	 * @throws Exception
 	 */
-	private static void grabPlantNewsMsgByCate2thUrl(String categoryUrl) throws Exception {
+	private static void grabPlantNewsMsgByCate2thUrl(String categoryUrl)
+			throws Exception {
 		Set<String> plantNewsUrls = grabPlantNewsUrls(categoryUrl);
 		Set<PlantMsg> plantMsg = grabPlantMsgByNewsUrl(plantNewsUrls);
 		// TODO 入库
@@ -161,18 +175,21 @@ public class JsoupTest {
 	 * @描述 根据省份经销商信息获取
 	 * @throws Exception
 	 */
-	private static Page<Set<String>> grabJxshaInfoUrlsByProvince(String province) throws Exception {
-		Set<String> agentLinkUrl = new HashSet<>();
-		Page<Set<String>> page = new Page<>();
-		for (int i = 0; i < 10; i++) {
-			Page<Set<String>> jxhLinksPage = grabJxshaInfoLinkUrl(base_url + jxs_more + "?lb=" + province);
-			if (i == 0) {
-				page.setTotal(jxhLinksPage.getTotal());
-			}
-			agentLinkUrl.addAll(jxhLinksPage.getEntry());
+	private static void grabJxshaInfoUrlsByProvince(final String province)
+			throws Exception {
+		for (int i = 0; i < 200; i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Page<Set<String>> jxhLinksPage = grabJxshaInfoLinkUrl(base_url+ jxs_more + "?lb=" + province);
+						System.out.println(Thread.currentThread().getName()+" "+jxhLinksPage.getTotal() + " "+ jxhLinksPage.getEntry().size());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}).start();
 		}
-		page.setEntry(agentLinkUrl);
-		return page;
 	}
 
 	private static Agency grabAgentInfoByLinkUrl(String url) throws Exception {
@@ -225,19 +242,25 @@ public class JsoupTest {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Page<Set<String>> grabJxshaInfoLinkUrl(String provinceUrl) throws Exception {
+	private static Page<Set<String>> grabJxshaInfoLinkUrl(String provinceUrl)
+			throws Exception {
 		Set<String> jxhLink = new HashSet<String>();
-		Document doc = Jsoup.connect(provinceUrl).get();
-		Element e1 = doc.select("#aleft1>table").get(2);
-		// 分页信息获取
-		Elements e_page = doc.select("#aleft1>table").get(3).select(".STYLE24");
-		for (Element e2 : e1.select("tbody>tr:gt(0)>td:eq(1)")) {
-			String href = e2.select("a").attr("href");
-			jxhLink.add(href.substring(0, href.indexOf("&")));// 仅存储id
+		HttpRequestResult result = HttpRequestUtils.doGet(provinceUrl, "gb2312");
+		Page<Set<String>> page = null;
+		if (200 == result.getCode()) {
+			page = new Page<>();
+			Document doc = Jsoup.parse(result.getContent());
+			Element e1 = doc.select("#aleft1>table").get(2);
+			// 分页信息获取
+			Elements e_page = doc.select("#aleft1>table").get(3)
+					.select(".STYLE24");
+			for (Element e2 : e1.select("tbody>tr:gt(0)>td:eq(1)")) {
+				String href = e2.select("a").attr("href");
+				jxhLink.add(href.substring(0, href.indexOf("&")));// 仅存储id
+			}
+			page.setEntry(jxhLink);
+			page.setTotal(Integer.valueOf(e_page.select("b:eq(2)").text()));
 		}
-		Page<Set<String>> page = new Page<>();
-		page.setEntry(jxhLink);
-		page.setTotal(Integer.valueOf(e_page.select("b:eq(2)").text()));
 		return page;
 	}
 
@@ -246,7 +269,8 @@ public class JsoupTest {
 	 * @return
 	 * @throws IOException
 	 */
-	private static Map<String, PlantsCategory> grabPlantCategoryUrl2th(String url) throws IOException {
+	private static Map<String, PlantsCategory> grabPlantCategoryUrl2th(
+			String url) throws IOException {
 		// 1.获取农作物种植技术大全
 		Document doc = Jsoup.connect(url).get();
 		Element nzwjsdq = doc.select("body>table").get(5);
@@ -265,7 +289,8 @@ public class JsoupTest {
 			Set<String> childUrls = new HashSet<>();
 			String title_1th = e.select(".STYLE4").text();
 			for (Element e2 : e.select(".ab")) {
-				String url2th = base_url + plant_prefix + e2.select("a").attr("href");
+				String url2th = base_url + plant_prefix
+						+ e2.select("a").attr("href");
 				childUrls.add(url2th);
 				// TODO 二级子类信息
 				PlantsCategory c = new PlantsCategory();
@@ -292,7 +317,8 @@ public class JsoupTest {
 	public static Page<Set<String>> grabPlantNewsUrlByPageNO(String plantUrl, Integer pageNo) throws Exception {
 		pageNo = pageNo == null ? 1 : pageNo;
 		Document root = Jsoup.connect(plantUrl + "?page=" + pageNo).get();
-		Elements areaInfo = root.select("body>table:eq(9)>tbody>tr>td:eq(0)>table>tbody>tr>td>table");
+		Elements areaInfo = root
+				.select("body>table:eq(9)>tbody>tr>td:eq(0)>table>tbody>tr>td>table");
 		// ===== 具体newsUrl获取
 		Set<String> newsUrls = null;
 		Elements e = areaInfo.get(0).select("a");
@@ -308,6 +334,7 @@ public class JsoupTest {
 		String pageStr = pageNoE.text();
 		int currentNo = Integer.valueOf(pageStr.substring(3, pageStr.indexOf("页/")));
 		int total = Integer.valueOf(pageStr.substring(pageStr.indexOf("/") + 1, pageStr.length() - 1));
+
 		Page<Set<String>> page = new Page<>(currentNo, total);
 		page.setEntry(newsUrls);
 		return page;
@@ -320,7 +347,8 @@ public class JsoupTest {
 	 */
 	private static PlantMsg grabPlantMsgByNewsUrl(String newsUrl) throws Exception {
 		Document doc = Jsoup.connect(newsUrl).get();
-		Elements root = doc.select("#aleft1").select("table>tbody").select("table");
+		Elements root = doc.select("#aleft1").select("table>tbody")
+				.select("table");
 		// 1.标题
 		String title = root.get(0).text();
 		String time = root.get(1).select("tr:eq(0)").text();
