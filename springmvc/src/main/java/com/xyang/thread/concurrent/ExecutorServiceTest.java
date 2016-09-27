@@ -13,6 +13,13 @@ import java.util.concurrent.Future;
 import org.junit.After;
 import org.junit.Test;
 
+/*
+ * 参考帖子:
+ *  1.http://www.open-open.com/solution/view/1320131360999/
+ *  2.http://blog.csdn.net/defonds/article/details/44021605#t55
+ *  3.http://blog.csdn.net/defonds/article/details/44021605#t41
+ *  4.http://blog.csdn.net/escaflone/article/details/10418651
+ */
 public class ExecutorServiceTest {
 	private final static int loopNum = 10;
 	private static ExecutorService executorService;
@@ -41,10 +48,12 @@ public class ExecutorServiceTest {
 				return "Task 2";
 			}
 		});
-		String result = executorService.invokeAny(callables);
-		System.out.println("result = " + result);
-		// 3.关闭
-		executorService.shutdown();
+		// String result = executorService.invokeAny(callables);
+		// System.out.println("result = " + result);
+		List<Future<String>> futures = executorService.invokeAll(callables);
+		for (Future<String> future : futures) {
+			System.out.println("future.get = " + future.get());
+		}
 	}
 
 	private int submitWithParamRunnableExe(ExecutorService executorService,
