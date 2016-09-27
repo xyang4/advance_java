@@ -70,7 +70,7 @@ public class JsoupTest {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					System.out.println(map);
+				System.out.println(Thread.currentThread().getName()+"结果: "+map);
 				}
 			}).start();
 		}
@@ -167,7 +167,7 @@ public class JsoupTest {
 				public void run() {
 					try {
 						Page<Set<String>> jxhLinksPage = grabJxshaInfoLinkUrl(base_url+ jxs_more + "?lb=" + province);
-						System.out.println(jxhLinksPage.getTotal() + " "+ jxhLinksPage.getEntry().size());
+						System.out.println(Thread.currentThread().getName()+" "+jxhLinksPage.getTotal() + " "+ jxhLinksPage.getEntry().size());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
