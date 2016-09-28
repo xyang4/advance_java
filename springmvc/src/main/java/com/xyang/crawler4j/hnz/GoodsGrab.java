@@ -20,34 +20,107 @@ public class GoodsGrab {
 	private static String base_url = "http://www.haonongzi.com/";
 	private static String tupu_url = "shop/tuku/";
 	private static String chartset = "gb2312";
-	private static String qiye_url="qiye/allqy.asp";
+	private static String qiye_url = "qiye/allqy.asp";
 
 	public static void main(String[] args) throws IOException {
-		grabManufacturerInfo();
-//		grabTupuInfo();
+		// grabTupuInfo();
+		// grabManufacturerInfo();
+		grabGoodsInfo();
+	}
+
+	private static void grabGoodsInfo() {
+		// 1.获取农资产品分类 一二级URL后缀
+//		Map<String, Set<String>> map = grabGoodsCategoryLinkurl(base_url + "infolist.htm");
+//		for (String key : map.keySet()) {
+//			System.out.println(key + " " + map.get(key).size());
+//		}
+		// 厂商：农药 肥料 种子
+		Set<String> set = grabMFLinkurlBypageViGoodsRukou(base_url+"zhongzi",null);
+		System.out.println(set.size());
+		// 产品 ：除草剂
+	}
+
+	/**
+	 * @描述 经产品库入口进入查询企业信息（有联系方式）
+	 * @param string
+	 * @param object
+	 * @return
+	 */
+	private static Set<String> grabMFLinkurlBypageViGoodsRukou(String url, Integer pageNo) {
+		url +="/default.asp?page="+(null==pageNo?0:pageNo);
+		Set<String> set = null;
+		HttpRequestResult result = HttpRequestUtils.doGet(url, chartset);
+		if (200 == result.getCode()) {
+			set = new HashSet<>();
+			Document doc = Jsoup.parse(result.getContent());
+			Elements linkE = doc.select(".b1");
+			int i=0;
+			for(Element e : linkE){
+				set.add(e.attr("href"));
+				System.out.println(i+++" "+e.attr("href"));
+			}
+			Elements pageE = doc.select("body>table:eq(7)").select("table:eq(1)");
+			System.out.println(pageE.text());
+			//分页信息获取
+		}
+		return set;
+	}
+
+	private static Map<String, Set<String>> grabGoodsCategoryLinkurl(String url) {
+		Map<String, Set<String>> map = new HashMap<>();
+		HttpRequestResult result = HttpRequestUtils.doGet(url, chartset);
+		if (200 == result.getCode()) {
+			Document doc = Jsoup.parse(result.getContent());
+			Elements root = doc.ownerDocument().select("#leibie>table");
+			Elements element1th = root.select(".b3");
+			Elements element2th = root.select(".ab");
+			// // 一级
+			Set<String> set1th = new HashSet<>();
+			for (Element e : element1th) {
+				set1th.add(e.attr("href"));
+			}
+			map.put("1th", set1th);
+			// 二级
+			Set<String> set2th = new HashSet<>();
+			for (Element e : element2th) {
+				set2th.add(e.attr("href"));
+			}
+			map.put("2th", set2th);
+		}
+		return map;
 	}
 
 	private static void grabManufacturerInfo() {
 		// TODO Auto-generated method stub
-		Set<String> qiyeLinkurls = grabMFLinkurlsByPage(base_url+qiye_url,null);
-		System.out.println(qiyeLinkurls.size());
+		Set<String> qiyeLinkurls = grabMFLinkurlsByPage(base_url + qiye_url, null);
+		System.out.println(qiyeLinkurls);
+		grabMFInfoByLinkurl(base_url + "");
+
 	}
 
-	private static Set<String> grabMFLinkurlsByPage(String url,Integer pageNo) {
+	/**
+	 * @param 根据企业链接地址查询企业信息详情
+	 */
+	private static void grabMFInfoByLinkurl(String qiyeUrl) {
+		// TODO Auto-generated method stub
+		System.out.println(qiyeUrl);
+	}
+
+	private static Set<String> grabMFLinkurlsByPage(String url, Integer pageNo) {
 		Set<String> set = null;
-		if(null!=pageNo){
-			url+="?page="+pageNo;
+		if (null != pageNo) {
+			url += "?page=" + pageNo;
 		}
 		HttpRequestResult result = HttpRequestUtils.doGet(url, chartset);
 		if (200 == result.getCode()) {
 			Document doc = Jsoup.parse(result.getContent());
 			Elements elements = doc.select(".ab");
-			if(!elements.isEmpty()){
+			if (!elements.isEmpty()) {
 				set = new HashSet<>();
 			}
-			for(Element e : elements){
+			for (Element e : elements) {
 				String href = e.attr("href");
-				if(StringUtils.isNotEmpty(href)&& href.startsWith("../info")){
+				if (StringUtils.isNotEmpty(href) && href.startsWith("../info")) {
 					set.add(href);
 				}
 			}
@@ -57,14 +130,14 @@ public class GoodsGrab {
 
 	private static void grabTupuInfo() throws IOException {
 		// 1.按 大田作物图库 经济作物图库 杂草图库 果树图库四大类抓取，考虑到将来做成定时任务，或消息队列的需要按此划分
-		Map<String, Set<String>> map = grabTupuCateLinkUrl(base_url + tupu_url+ "tuku_se.asp");
+		Map<String, Set<String>> map = grabTupuCateLinkUrl(base_url + tupu_url + "tuku_se.asp");
 		// 2.获取图谱链接
 		for (String key : map.keySet()) {
 			System.out.println(key + " " + map.get(key));
 		}
 		String suffix = "jingji.asp";
 		// String suffix="tuku_se.asp?seKey=梨";
-		Set<String> tupuInfoLinkurls = grabTupuInfoLinkUrlsByCategorySuffix(base_url+ tupu_url + suffix);
+		Set<String> tupuInfoLinkurls = grabTupuInfoLinkUrlsByCategorySuffix(base_url + tupu_url + suffix);
 		System.out.println(tupuInfoLinkurls);
 		// 3.根据链接获取图谱具体信息
 		String tupuSuffix_url = "20140118/143337.html";
@@ -86,8 +159,7 @@ public class GoodsGrab {
 		}
 	}
 
-	private static Set<String> grabTupuInfoLinkUrlsByCategorySuffix(String url)
-			throws IOException {
+	private static Set<String> grabTupuInfoLinkUrlsByCategorySuffix(String url) throws IOException {
 		Set<String> set = null;
 		if (url.contains("seKey=")) {
 			// 中文转换
