@@ -53,7 +53,7 @@ public class GoodsInfoGrab extends BaseGrab {
 //		System.out.println(set.size());
 //		=========================================================
 		System.out.println(set.size());
-//		grabGoodsDetailsInfoByLinkurl(base_url+"/info/dhhg-hnz/product_549027.html");
+		grabGoodsDetailsInfoByLinkurl(base_url+"info/dhhg-hnz/product_549027.html");
 		
 	}
 	private static Set<String> grabGoodsLinkurlByCatgoryAndPage1(String category_url,Integer pageNo) {
@@ -113,15 +113,10 @@ public class GoodsInfoGrab extends BaseGrab {
 			Elements root = doc.ownerDocument().select("#aleft1");
 			Elements e = root.select(".STYLE333");
 			//TODO 实体封装
-			String zhichiStr=e.get(0).text();//厂家支持
-			String dailiC = e.get(1).text();//代理条件
-			String shuomingStr = null;//产品说明
-			String changjiaStr = root.select(".b1").text();
+			String changjiaStr = root.select(".b1").text();//厂家名称
+			String qiyeLinkUrl = url.replace(url.substring(url.lastIndexOf("/")+1),"index.html");
 			String imgUrl = root.select(".list5").select("img").attr("src").substring(6);
-			System.out.println("厂家 " +changjiaStr);
-			System.out.println("图片 " +imgUrl);
-			System.out.println("厂家支持 " +zhichiStr);
-			System.out.println("代理条件 "+dailiC);
+			String shuomingStr = null;//产品说明
 			Elements shuomingE = root.select("span");
 			for(Element ee : shuomingE){
 				if(ee.attr("style").equals("font-size:14px")){
@@ -129,7 +124,8 @@ public class GoodsInfoGrab extends BaseGrab {
 					break;
 				}
 			}
-			System.out.println("产品说明 "+shuomingStr);
+			//TODO 联系方式处理
+			System.out.println("厂家连接： "+qiyeLinkUrl);
 		}
 	}
 	private static Map<String, Set<String>> grabGoodsCategoryLinkurl(String url) {

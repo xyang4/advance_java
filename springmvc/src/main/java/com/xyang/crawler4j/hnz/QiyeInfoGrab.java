@@ -14,7 +14,7 @@ import com.xyang.utils.HttpRequestUtils;
 
 public class QiyeInfoGrab extends BaseGrab {
 	private static String qiye_url = "qiye/allqy.asp";
-	
+	private final static String icbc_url="http://www.qichacha.com/search?key=";
 	public static void grabManufacturerInfo() {
 		// TODO Auto-generated method stub
 		Set<String> qiyeLinkurls = grabMFLinkurlsByPage(base_url + qiye_url, null);
@@ -73,5 +73,12 @@ public class QiyeInfoGrab extends BaseGrab {
 	private static void grabMFInfoByLinkurl(String qiyeUrl) {
 		// TODO Auto-generated method stub
 		System.out.println(qiyeUrl);
+	}
+	private static void getQiyeInfoByName(String qiyeName){
+		HttpRequestResult result = HttpRequestUtils.doGet(icbc_url+qiyeName, chartset);
+		if (200 == result.getCode()) {
+			Document doc = Jsoup.parse(result.getContent());
+			Elements root = doc.select(".searchlist");
+		}
 	}
 }
