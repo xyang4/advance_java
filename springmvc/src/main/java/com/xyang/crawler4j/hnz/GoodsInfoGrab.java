@@ -26,24 +26,60 @@ public class GoodsInfoGrab extends BaseGrab {
 //		for (String key : map.keySet()) {
 //			System.out.println(key + " " + map.get(key));
 //		}
+		
+		String url = "shachong/";
+//		String url = "zsview/fl.asp";
+//		String url = "infomore.asp?lb=%C9%B1%CA%F3%BC%C1&sid=16";
+		Set<String> set = null;
+		if(url.contains(".asp")){
+			if(url.contains("&sid=")){
+				set = grabGoodsLinkurlByCatgoryAndPage2(base_url+url,1);
+			}else{
+				set = grabGoodsLinkurlByCatgoryAndPage1(base_url+url,2);
+			}
+		}else{
+			set = grabGoodsLinkurlByCatgoryAndPage(base_url+url,1);
+		}
 		// 厂商：农药 肥料 种子
 //		Set<String> set = grabMFLinkurlBypageViGoodsRukou(base_url+"zhongzi",null);
 //		System.out.println(set.size());
 		// 产品 ：除草剂
-//		1. url 为 http://www.haonongzi.com/shajun/的
-//		Set<String> set = grabGoodsLinkurlByCatgoryAndPage(base_url+"chucao",null);
+//		1. url 为 http://www.haonongzi.com/shajun/的 
+//		Set<String> set = grabGoodsLinkurlByCatgoryAndPage(base_url+"shachong",null);
+//		Set<String> set = grabGoodsLinkurlByCatgoryAndPage1(base_url+"zsview/fl.asp",2);
+		//2. url 为 http://www.haonongzi.com/infomore.asp?page=3&lb=%C9%B1%CA%F3%BC%C1&sid=16
+//		Set<String> set = grabGoodsLinkurlByCatgoryAndPage2(base_url+"infomore.asp?lb=%C9%B1%CA%F3%BC%C1&sid=16",2);
 //		//循环查找
 //		System.out.println(set.size());
 //		=========================================================
-		
-		
-		
-		
-		//2. url 为 http://www.haonongzi.com/infomore.asp?page=3&lb=%C9%B1%CA%F3%BC%C1&sid=16
-		Set<String> set = grabGoodsLinkurlByCatgoryAndPage2(base_url+"infomore.asp?page=3&lb=%C9%B1%CA%F3%BC%C1&sid=16",2);
 		System.out.println(set.size());
-//		grabGoodsLinkurlByCatgoryAndPage2(base_url+"chucao",null);
 //		grabGoodsDetailsInfoByLinkurl(base_url+"/info/dhhg-hnz/product_549027.html");
+		
+	}
+	private static Set<String> grabGoodsLinkurlByCatgoryAndPage1(String category_url,Integer pageNo) {
+		category_url += ("?page=" + (null == pageNo ? 1 : pageNo));
+		Set<String> set = null;
+		HttpRequestResult result = HttpRequestUtils.doGet(category_url, chartset);
+		if (200 == result.getCode()) {
+			set = new HashSet<>();
+			Document doc = Jsoup.parse(result.getContent());
+			for(Element e : doc.select(".b4")){
+				String tmp = e.attr("href");
+				if(tmp.startsWith("../info/")){
+					set.add(tmp.substring(3));
+				}
+			}
+			//TODO 页数处理
+			int pageNoTotal = 0;
+			for(Element e : doc.select(".b3")){
+				if(e.text().startsWith("最")){
+					String tmp =e.attr("href");
+					pageNoTotal=Integer.valueOf(tmp.substring(tmp.indexOf("=")+1));
+				}
+			}
+			System.out.println(pageNoTotal);
+		}
+		return set;
 	}
 	private static Set<String> grabGoodsLinkurlByCatgoryAndPage2(String category_url,Integer pageNo) {
 		category_url += ("&page=" + (null == pageNo ? 1 : pageNo));
@@ -58,9 +94,14 @@ public class GoodsInfoGrab extends BaseGrab {
 			//TODO 页数获取
 			Elements pageE = doc.select(".list1").get(0).select("tbody>tr:eq(1)").select("table:eq(2)");
 			String temp = pageE.text();
-			int totalPage = 0;
-			totalPage = Integer.valueOf(temp.split("页")[2].replace("共", "").trim());
-			System.out.println(totalPage);
+			temp = temp.substring(temp.indexOf("共"));
+			int totalPage = 0;//总页数
+			int total=0;;//总记录条数
+//			totalPage = Integer.valueOf(temp.split("页")[2].replace("共", "").trim());
+			String[] strArr = temp.substring(temp.indexOf("共")+1, temp.indexOf("个产品")).split("页");
+			totalPage = Integer.valueOf(strArr[0]);
+			total = Integer.valueOf(strArr[1]);
+			System.out.println("总记录数:"+total+" 总页数:"+totalPage);
 		}
 		return set;
 		
@@ -116,7 +157,7 @@ public class GoodsInfoGrab extends BaseGrab {
 	}
 	
 	public static Set<String> grabGoodsLinkurlByCatgoryAndPage(String category_url,Integer pageNo){
-		category_url += ("/default.asp?page=" + (null == pageNo ? 1 : pageNo));
+		category_url += ("default.asp?page=" + (null == pageNo ? 1 : pageNo));
 		Set<String> set = null;
 		HttpRequestResult result = HttpRequestUtils.doGet(category_url, chartset);
 		if (200 == result.getCode()) {
@@ -125,6 +166,15 @@ public class GoodsInfoGrab extends BaseGrab {
 			for(Element e : doc.select(".b4")){
 				set.add(e.attr("href").substring(3));
 			}
+			//TODO 页数处理
+			int pageNoTotal = 0;
+			for(Element e : doc.select(".b3")){
+				if(e.text().startsWith("最")){
+					String tmp =e.attr("href");
+					pageNoTotal=Integer.valueOf(tmp.substring(tmp.indexOf("=")+1));
+				}
+			}
+			System.out.println("总页数 ："+pageNoTotal);
 		}
 		return set;
 	}
