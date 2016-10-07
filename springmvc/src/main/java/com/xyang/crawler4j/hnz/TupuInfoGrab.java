@@ -21,7 +21,9 @@ import com.xyang.utils.HttpRequestUtils;
  */
 public class TupuInfoGrab extends BaseGrab {
 	private static String tupu_url = "shop/tuku/";
-
+public static void main(String[] args)throws Exception {
+	grabTupuInfo();
+}
 	public static void grabTupuInfo() throws IOException {
 		// 1.按 大田作物图库 经济作物图库 杂草图库 果树图库四大类抓取，考虑到将来做成定时任务，或消息队列的需要按此划分
 		Map<String, Set<String>> map = grabTupuCateLinkUrl(base_url + tupu_url
@@ -30,14 +32,14 @@ public class TupuInfoGrab extends BaseGrab {
 		for (String key : map.keySet()) {
 			System.out.println(key + " " + map.get(key));
 		}
-		String suffix = "jingji.asp";
-		// String suffix="tuku_se.asp?seKey=梨";
-		Set<String> tupuInfoLinkurls = grabTupuInfoLinkUrlsByCategorySuffix(base_url
-				+ tupu_url + suffix);
-		System.out.println(tupuInfoLinkurls);
-		// 3.根据链接获取图谱具体信息
-		String tupuSuffix_url = "20140118/143337.html";
-		grabTupuInfoByLinkurl(base_url + tupu_url + tupuSuffix_url);
+//		String suffix = "jingji.asp";
+//		// String suffix="tuku_se.asp?seKey=梨";
+//		Set<String> tupuInfoLinkurls = grabTupuInfoLinkUrlsByCategorySuffix(base_url
+//				+ tupu_url + suffix);
+//		System.out.println(tupuInfoLinkurls);
+//		// 3.根据链接获取图谱具体信息
+//		String tupuSuffix_url = "20140118/143337.html";
+//		grabTupuInfoByLinkurl(base_url + tupu_url + tupuSuffix_url);
 
 	}
 
@@ -90,19 +92,17 @@ public class TupuInfoGrab extends BaseGrab {
 			for (Element e : cropCategoryE) {
 				cropCategorySuffixUrls.add(e.attr("href"));
 			}
-			map.put("作物大类", cropCategorySuffixUrls);
-			Elements cropE = doc.select(".ss2a");
+
+			Elements rootE = doc.select("#am_right>table");
 			Set<String> cropSuffixUrls = new HashSet<>();
-			for (Element e : cropE) {
+			for (Element e : rootE.get(0).select("a")) {
 				cropSuffixUrls.add(e.attr("href"));
 			}
-			map.put("作物", cropSuffixUrls);
-			Elements bingchongE = doc.select(".ss2");
-			Set<String> bingchongSuffixUrls = new HashSet<>();
-			for (Element e : bingchongE) {
-				bingchongSuffixUrls.add(e.attr("href"));
+			//病虫害
+			for (Element e : rootE.get(1).select("a")) {
+				cropSuffixUrls.add(e.attr("href"));
 			}
-			map.put("病虫害", bingchongSuffixUrls);
+			System.out.println(cropSuffixUrls.size());
 		}
 		return map;
 	}

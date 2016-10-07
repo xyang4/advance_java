@@ -27,19 +27,23 @@ public class GoodsInfoGrab extends BaseGrab {
 //			System.out.println(key + " " + map.get(key));
 //		}
 		
-		String url = "shachong/";
+//		String url = "shachong/";
 //		String url = "zsview/fl.asp";
+		String url = "cclist/ym.asp";
 //		String url = "infomore.asp?lb=%C9%B1%CA%F3%BC%C1&sid=16";
-		Set<String> set = null;
-		if(url.contains(".asp")){
-			if(url.contains("&sid=")){
-				set = grabGoodsLinkurlByCatgoryAndPage2(base_url+url,1);
-			}else{
-				set = grabGoodsLinkurlByCatgoryAndPage1(base_url+url,2);
-			}
-		}else{
-			set = grabGoodsLinkurlByCatgoryAndPage(base_url+url,1);
-		}
+//		Set<String> set = null;
+//		if(url.contains(".asp")){
+//			if(url.contains("&sid=")){
+//				set = grabGoodsLinkurlByCatgoryAndPage2(base_url+url,1);
+//			}else{
+//				set = grabGoodsLinkurlByCatgoryAndPage1(base_url+url,2);
+//				if(null==set){
+//					set=grabGoodsLinkurlByCatgoryAndPage4(base_url+url,null);
+//				}
+//			}
+//		}else{
+//			set = grabGoodsLinkurlByCatgoryAndPage(base_url+url,1);
+//		}
 		// 厂商：农药 肥料 种子
 //		Set<String> set = grabMFLinkurlBypageViGoodsRukou(base_url+"zhongzi",null);
 //		System.out.println(set.size());
@@ -52,9 +56,34 @@ public class GoodsInfoGrab extends BaseGrab {
 //		//循环查找
 //		System.out.println(set.size());
 //		=========================================================
-		System.out.println(set.size());
+//		System.out.println(set.size());
 		grabGoodsDetailsInfoByLinkurl(base_url+"info/dhhg-hnz/product_549027.html");
 		
+	}
+	private static Set<String> grabGoodsLinkurlByCatgoryAndPage4(String category_url, Integer pageNo) {
+		category_url += ("?page=" + (null == pageNo ? 1 : pageNo));
+		Set<String> set = null;
+		HttpRequestResult result = HttpRequestUtils.doGet(category_url, chartset);
+		if (200 == result.getCode()) {
+			set = new HashSet<>();
+			Document doc = Jsoup.parse(result.getContent());
+			for(Element e : doc.select(".zz")){
+				String tmp = e.attr("href");
+				if(tmp.startsWith("../info/")){
+					set.add(tmp.substring(3));
+				}
+			}
+			//页数处理
+			int pageNoTotal = 0;
+			for(Element e : doc.select(".b3")){
+				if(e.text().startsWith("末")){
+					String tmp =e.attr("href");
+					pageNoTotal=Integer.valueOf(tmp.substring(tmp.indexOf("=")+1));
+				}
+			}
+			System.out.println(pageNoTotal);
+		}
+		return set;
 	}
 	private static Set<String> grabGoodsLinkurlByCatgoryAndPage1(String category_url,Integer pageNo) {
 		category_url += ("?page=" + (null == pageNo ? 1 : pageNo));
@@ -115,7 +144,7 @@ public class GoodsInfoGrab extends BaseGrab {
 			//TODO 实体封装
 			String changjiaStr = root.select(".b1").text();//厂家名称
 			String qiyeLinkUrl = url.replace(url.substring(url.lastIndexOf("/")+1),"index.html");
-			String imgUrl = root.select(".list5").select("img").attr("src").substring(6);
+			String imgUrl = root.select(".list5").select("img").attr("src").replace("../", "").trim();
 			String shuomingStr = null;//产品说明
 			Elements shuomingE = root.select("span");
 			for(Element ee : shuomingE){
@@ -124,6 +153,7 @@ public class GoodsInfoGrab extends BaseGrab {
 					break;
 				}
 			}
+			System.out.println(imgUrl+" "+changjiaStr+" "+shuomingStr.length());
 			//TODO 联系方式处理
 			System.out.println("厂家连接： "+qiyeLinkUrl);
 		}
