@@ -2,8 +2,6 @@ package com.xyang.utils;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.bcel.classfile.Code;
-
 public class CodingUtils {
 	/**
 	 * @描述 把中文字符转换为带百分号的浏览器编码

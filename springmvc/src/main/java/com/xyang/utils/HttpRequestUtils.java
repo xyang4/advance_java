@@ -47,6 +47,7 @@ public class HttpRequestUtils {
 	private static PoolingHttpClientConnectionManager connMgr;
 	private static RequestConfig requestConfig;
 	private static final int MAX_TIMEOUT = 7000;
+	private static final String default_chartset = "UTF-8";
 	static {
 		// 设置连接池
 		connMgr = new PoolingHttpClientConnectionManager();
@@ -112,7 +113,7 @@ public class HttpRequestUtils {
 			if (entity != null) {
 				InputStream instream = entity.getContent();
 				if (null == charset) {
-					charset = "UTF-8";
+					charset = default_chartset;
 				}
 				content = IOUtils.toString(instream, charset);
 			}
@@ -160,7 +161,7 @@ public class HttpRequestUtils {
 					pairList.add(pair);
 				}
 				if (null == charset) {
-					charset = "UTF-8";
+					charset = default_chartset;
 				}
 				httpPost.setEntity(new UrlEncodedFormEntity(pairList, Charset
 						.forName(charset)));
@@ -197,7 +198,7 @@ public class HttpRequestUtils {
 		HttpPost httpPost = new HttpPost(apiUrl);
 		CloseableHttpResponse response = null;
 		if (null == charset) {
-			charset = "UTF-8";
+			charset = default_chartset;
 		}
 		try {
 			httpPost.setConfig(requestConfig);
@@ -243,7 +244,7 @@ public class HttpRequestUtils {
 		CloseableHttpResponse response = null;
 		String httpStr = null;
 		if (null == charset) {
-			charset = "UTF-8";
+			charset = default_chartset;
 		}
 		try {
 			httpPost.setConfig(requestConfig);
@@ -298,7 +299,7 @@ public class HttpRequestUtils {
 		CloseableHttpResponse response = null;
 		String httpStr = null;
 		if (null == charset) {
-			charset = "UTF-8";
+			charset = default_chartset;
 		}
 		try {
 			httpPost.setConfig(requestConfig);
