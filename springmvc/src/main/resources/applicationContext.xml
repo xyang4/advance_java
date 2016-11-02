@@ -5,6 +5,8 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 采用注释的方式配置bean -->
+	<context:annotation-config />
 	<!-- 包扫描开启 -->
 	<context:component-scan base-package="com.xyang.controller" annotation-config="true" />
 	<!-- 资源文件加载 -->
