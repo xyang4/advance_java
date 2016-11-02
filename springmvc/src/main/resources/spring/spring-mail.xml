@@ -4,30 +4,38 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd"
+        default-autowire="byName">
+        
+	<!-- 采用注释的方式配置bean -->
+	<context:annotation-config />
 
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:mail.properties</value>
-			</list>
+	<!-- 配置要扫描的包 -->
+	<context:component-scan base-package="com.xyang.mail" />
+
+	<!-- 读入配置属性文件 -->
+	<context:property-placeholder location="classpath:config/mail.properties" />
+	<!-- Spring提供的发送电子邮件的高级抽象类 ,qq需要SSL-->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.smtp.host}" />
+		<property name="port" value="${mail.smtp.port}" />
+		<property name="username" value="${mail.smtp.username}" />
+		<property name="password" value="${mail.smtp.password}" />
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${mail.smtp.auth}</prop>
+				<prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>
+                <prop key="mail.smtp.starttls.enable">${mail.smtp.starttls.enable}</prop>
+                <prop key="mail.smtp.socketFactory.port">${mail.smtp.port}</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+			</props>
 		</property>
 	</bean>
-
-	<!-- 邮件发送器 163  -->    
-    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">    
-        <property name="host" value="${mail.host}" />    
-        <property name="username" value="${mail.username}" />    
-        <property name="password" value="${mail.password}" />    
-        <property name="defaultEncoding" value="UTF-8"></property>    
-        <property name="javaMailProperties">    
-            <props>    
-                <prop key="mail.smtp.auth">${mail.smtp.auth}</prop>    
-                <prop key="mail.smtp.timeout">${mail.smtp.timeout}</prop>   
-            </props>    
-        </property>    
-    </bean>   
-    <!-- 包扫描开启 -->
-	<context:component-scan base-package="com.xyang" annotation-config="true" />
+	<bean id="simpleMailMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="from">
+			<value>${mail.default.from}</value>
+		</property>
+	</bean>
 </beans>

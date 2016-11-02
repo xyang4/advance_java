@@ -12,12 +12,6 @@
            http://www.springframework.org/schema/context  
            http://www.springframework.org/schema/context/spring-context-3.2.xsd"
 	default-autowire="byName" default-lazy-init="false">
-	<!-- 采用注释的方式配置bean -->
-	<context:annotation-config />
-
-	<!-- 配置要扫描的包 -->
-	<context:component-scan base-package="com.xyang.activemq" />
-
 	<!-- 读入配置属性文件 -->
 	<context:property-placeholder location="classpath:config/mq.properties" />
 
@@ -25,8 +19,8 @@
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<!-- ActiveMQ服务地址 -->
 		<property name="brokerURL" value="${mq.brokerURL}" />
-		<property name="userName" value="${mq.userName}"></property>
-		<property name="password" value="${mq.password}"></property>
+		<property name="userName" value="${mq.userName}" />
+		<property name="password" value="${mq.password}" />
 	</bean>
 
 	<!-- ActiveMQ为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory 
@@ -49,24 +43,22 @@
 	<bean id="activeMqJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
 		<!-- 这个connectionFactory对应的是我们定义的Spring提供的那个ConnectionFactory对象 -->
 		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="defaultDestinationName" value="${queueName}"></property>
+		<property name="defaultDestinationName" value="${queueName}" />
 	</bean>
 
-	<!--这个是sessionAwareQueue目的地 -->
-	<bean id="sessionAwareQueue" class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg>
-			<value>${queueName}</value>
-		</constructor-arg>
+	<!--这个是队列目的地 -->
+	<bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="${queueName}" />
 	</bean>
 
-	<!-- 可以获取session的MessageListener -->
+	<!-- 1.配置 消息监听器 -->
 	<bean id="consumerSessionAwareMessageListener"
 		class="com.xyang.activemq.customer.listener.ConsumerSessionAwareMessageListener" />
-
-	<bean id="sessionAwareListenerContainer"
+	<!-- 2.配置消息监听容器 -->
+	<bean id="jmsContainer"
 		class="org.springframework.jms.listener.DefaultMessageListenerContainer">
 		<property name="connectionFactory" ref="connectionFactory" />
-		<property name="destination" ref="sessionAwareQueue" />
+		<property name="destination" ref="queueDestination" />
 		<property name="messageListener" ref="consumerSessionAwareMessageListener" />
 	</bean>
 </beans>

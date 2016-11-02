@@ -13,18 +13,18 @@
            http://www.springframework.org/schema/context/spring-context-3.2.xsd"
 	default-autowire="byName" default-lazy-init="false">
 
-	<context:annotation-config />
 	<!-- 配置要扫描的包 -->
 	<context:component-scan base-package="com.xyang.activemq.producer" />
 	<!-- 读入配置属性文件 -->
-	<context:property-placeholder location="classpath:config/mq.properties" />
+	<context:property-placeholder location="classpath:config/mq.properties"
+		file-encoding="UTF-8" />
 
 	<!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供 -->
 	<bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
 		<!-- ActiveMQ服务地址 -->
 		<property name="brokerURL" value="${mq.brokerURL}" />
-		<property name="userName" value="${mq.userName}"></property>
-		<property name="password" value="${mq.password}"></property>
+		<property name="userName" value="${mq.userName}" />
+		<property name="password" value="${mq.password}" />
 	</bean>
 	<!-- ActiveMQ为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory 
 		可以用来将Connection、Session和MessageProducer池化，这样可以大大的减少我们的资源消耗。 要依赖于 activemq-pool包 -->
@@ -40,7 +40,7 @@
 		<property name="targetConnectionFactory" ref="pooledConnectionFactory" />
 	</bean>
 
-	<!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+	<!-- msg生产者配置 - Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
 
 	<!-- 队列模板 -->
 	<bean id="activeMqJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -48,5 +48,5 @@
 		<property name="connectionFactory" ref="connectionFactory" />
 		<property name="defaultDestinationName" value="${queueName}" />
 	</bean>
-	<!-- Destination目的地设置 -->
+	<!-- Destination目的地配置 -->
 </beans>

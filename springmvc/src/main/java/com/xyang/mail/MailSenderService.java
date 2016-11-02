@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("mailSenderService")
 public class MailSenderService {
 	@Autowired
 	private JavaMailSenderImpl javaMailSenderImpl;
@@ -23,11 +23,9 @@ public class MailSenderService {
 	 * @throws MessagingException
 	 * @throws UnsupportedEncodingException
 	 */
-	public MimeMessage createMimeMessage(MailBean mailBean)
-			throws MessagingException, UnsupportedEncodingException {
+	public MimeMessage createMimeMessage(MailBean mailBean) throws Exception {
 		MimeMessage mimeMessage = javaMailSenderImpl.createMimeMessage();
-		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,
-				true, "UTF-8");
+		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true, "UTF-8");
 		messageHelper.setFrom(mailBean.getFrom(), mailBean.getFromName());
 		messageHelper.setSubject(mailBean.getSubject());
 		messageHelper.setTo(mailBean.getToEmails());
@@ -35,8 +33,7 @@ public class MailSenderService {
 		return mimeMessage;
 	}
 
-	public void sendMail(MailBean mailBean)
-			throws UnsupportedEncodingException, MessagingException {
+	public void sendMail(MailBean mailBean) throws Exception {
 		MimeMessage msg = createMimeMessage(mailBean);
 		javaMailSenderImpl.send(msg);
 	}
