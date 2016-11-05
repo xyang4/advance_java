@@ -7,6 +7,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+import javax.jms.TextMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,31 +27,23 @@ public class ProducerServiceImpl implements ProducerService {
 	@Autowired
 	@Qualifier("responseQueue")
 	private Destination responseDestination;
-	
+
 	public void sendMessage(Destination destination, final String message) {
-		System.out.println("---------------生产者发送消息-----------------");  
-        System.out.println("---------------生产者发了一个消息：" + message);  
+		System.out.println("---------------生产者发送消息-----------------");
+		System.out.println("---------------生产者发了一个消息：" + message);
 		jmsTemplate.send(destination, new MessageCreator() {
 			public Message createMessage(Session session) throws JMSException {
-				/*TextMessage textMessage = session.createTextMessage(message);
-				textMessage.setJMSReplyTo(responseDestination);
-				return textMessage;*/
+				// 设置消息回复目的地，当xml中消息监听器配置defaultResponseDestination后可省略，但该处设置的目的地级别较高
+				// TextMessage textMessage = session.createTextMessage(message);
+				// textMessage.setJMSReplyTo(responseDestination);
+				// return textMessage;
 				return session.createTextMessage(message);
 			}
 		});
 	}
-	
-	public void sendMessage(final Destination destination, final Serializable obj) {
-		//δʹ��MessageConverter�����
-		/*jmsTemplate.send(destination, new MessageCreator() {
 
-			public Message createMessage(Session session) throws JMSException {
-				ObjectMessage objMessage = session.createObjectMessage(obj);
-				return objMessage;
-			}
-			
-		});*/
-		//ʹ��MessageConverter�����
+	public void sendMessage(final Destination destination, final Serializable obj) {
+
 		jmsTemplate.convertAndSend(destination, obj);
 		jmsTemplate.execute(new SessionCallback<Object>() {
 
@@ -60,18 +53,17 @@ public class ProducerServiceImpl implements ProducerService {
 				producer.send(message);
 				return null;
 			}
-			
+
 		});
 		jmsTemplate.execute(new ProducerCallback<Object>() {
 
-			public Object doInJms(Session session, MessageProducer producer)
-					throws JMSException {
+			public Object doInJms(Session session, MessageProducer producer) throws JMSException {
 				Message message = session.createObjectMessage(obj);
 				producer.send(destination, message);
 				return null;
 			}
-			
+
 		});
 	}
-	
+
 }

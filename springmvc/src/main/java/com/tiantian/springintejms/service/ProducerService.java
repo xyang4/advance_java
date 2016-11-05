@@ -7,14 +7,14 @@ import javax.jms.Destination;
 public interface ProducerService {
 
 	/**
-	 * ·¢ËÍÆÕÍ¨µÄ´¿ÎÄ±¾ÏûÏ¢
+	 * å‘é€æ™®é€šçš„çº¯æ–‡æœ¬æ¶ˆæ¯
 	 * @param destination
 	 * @param message
 	 */
 	public void sendMessage(Destination destination, String message);
 	
 	/**
-	 * ·¢ËÍÒ»¸öObjectMessage
+	 * å‘é€ä¸€ä¸ªObjectMessage
 	 * @param destination
 	 * @param obj
 	 */

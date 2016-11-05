@@ -9,23 +9,24 @@ import javax.jms.TextMessage;
 
 import org.springframework.jms.listener.SessionAwareMessageListener;
 
-public class ConsumerSessionAwareMessageListener implements
-		SessionAwareMessageListener<TextMessage> {
+/**
+ * @æè¿° Springæä¾›ï¼Œéæ ‡å‡†çš„jms MessageListener
+ * @date 2016å¹´11æœˆ5æ—¥-ä¸‹åˆ6:46:31
+ * @author IBM
+ *
+ */
+public class ConsumerSessionAwareMessageListener implements SessionAwareMessageListener<TextMessage> {
 
 	private Destination destination;
-	
+
+	@Override
 	public void onMessage(TextMessage message, Session session) throws JMSException {
-		System.out.println("ÊÕµ½Ò»ÌõÏûÏ¢");
-		System.out.println("ÏûÏ¢ÄÚÈİÊÇ£º" + message.getText());
+		System.out.println("æ”¶åˆ°ä¸€æ¡æ¶ˆæ¯");
+		System.out.println("æ¶ˆæ¯å†…å®¹æ˜¯ï¼š" + message.getText());
 		MessageProducer producer = session.createProducer(destination);
-		Message textMessage = session.createTextMessage("ConsumerSessionAwareMessageListener¡£¡£¡£");
+		Message textMessage = session.createTextMessage("ConsumerSessionAwareMessageListenerã€‚ã€‚ã€‚");
 		producer.send(textMessage);
 	}
-
-	public Destination getDestination() {
-		return destination;
-	}
-
 	public void setDestination(Destination destination) {
 		this.destination = destination;
 	}

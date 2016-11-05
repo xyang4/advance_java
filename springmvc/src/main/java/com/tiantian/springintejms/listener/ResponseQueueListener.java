@@ -5,13 +5,19 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+/**
+ * @æè¿° ç›‘å¬å‘é€çš„æ¶ˆæ¯è¢«æ¶ˆè´¹åè¿”å›ä¿¡æ¯
+ * @date 2016å¹´11æœˆ5æ—¥-ä¸‹åˆ7:25:19
+ * @author IBM
+ *
+ */
 public class ResponseQueueListener implements MessageListener {
-
+	@Override
 	public void onMessage(Message message) {
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
 			try {
-				System.out.println("½ÓÊÕµ½·¢ËÍµ½responseQueueµÄÒ»¸öÎÄ±¾ÏûÏ¢£¬ÄÚÈİÊÇ£º" + textMessage.getText());
+				System.out.println("æ¥æ”¶åˆ°å‘é€åˆ°responseQueueçš„ä¸€ä¸ªæ–‡æœ¬æ¶ˆæ¯ï¼Œå†…å®¹æ˜¯ï¼š" + textMessage.getText());
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}

@@ -1,38 +1,28 @@
 package com.tiantian.springintejms.listener;
 
-import javax.jms.JMSException;
-import javax.jms.ObjectMessage;
-
-import com.tiantian.springintejms.entity.Email;
-
 public class ConsumerListener {
 
-	public void handleMessage(String message) {
-		System.out.println("ConsumerListenerÍ¨¹ıhandleMessage½ÓÊÕµ½Ò»¸ö´¿ÎÄ±¾ÏûÏ¢£¬ÏûÏ¢ÄÚÈİÊÇ£º" + message);
-	}
-	
-	/*public void receiveMessage(String message) {
-		System.out.println("ConsumerListenerÍ¨¹ıreceiveMessage½ÓÊÕµ½Ò»¸ö´¿ÎÄ±¾ÏûÏ¢£¬ÏûÏ¢ÄÚÈİÊÇ£º" + message);
-	}*/
-	
 	/**
-	 * µ±·µ»ØÀàĞÍÊÇ·ÇnullÊ±MessageListenerAdapter»á×Ô¶¯°Ñ·µ»ØÖµ·â×°³ÉÒ»¸öMessage£¬È»ºó½øĞĞ»Ø¸´
+	 * @æè¿° springä¸æŒ‡å®šdefaultListenerMethodæ—¶é»˜è®¤è°ƒç”¨
+	 * @date 2016å¹´11æœˆ5æ—¥-ä¸‹åˆ7:06:14
+	 * @param message
+	 */
+	public void handleMessage(String message) {
+		System.out.println("ConsumerListeneré€šè¿‡handleMessageæ¥æ”¶åˆ°ä¸€ä¸ªçº¯æ–‡æœ¬æ¶ˆæ¯ï¼Œæ¶ˆæ¯å†…å®¹æ˜¯ï¼š" + message);
+	}
+
+//	public void receiveMessage(String message) {
+//		System.out.println("ConsumerListeneré€šè¿‡receiveMessageæ¥æ”¶åˆ°ä¸€ä¸ªçº¯æ–‡æœ¬æ¶ˆæ¯ï¼Œæ¶ˆæ¯å†…å®¹æ˜¯ï¼š" + message);
+//	}
+
+	/**
+	 * å½“è¿”å›ç±»å‹æ˜¯énullæ—¶MessageListenerAdapterä¼šè‡ªåŠ¨æŠŠè¿”å›å€¼å°è£…æˆä¸€ä¸ªMessageï¼Œç„¶åè¿›è¡Œå›å¤ï¼Œè¿”å›nullæˆ–voidæ—¶MessageListenerAdapterä¸ä½œæ¶ˆæ¯çš„è‡ªåŠ¨å›å¤
+	 * 
 	 * @param message
 	 * @return
 	 */
 	public String receiveMessage(String message) {
-		System.out.println("ConsumerListenerÍ¨¹ıreceiveMessage½ÓÊÕµ½Ò»¸ö´¿ÎÄ±¾ÏûÏ¢£¬ÏûÏ¢ÄÚÈİÊÇ£º" + message);
-		return "ÕâÊÇConsumerListener¶ÔÏóµÄreceiveMessage·½·¨µÄ·µ»ØÖµ¡£";
+		System.out.println("ConsumerListeneré€šè¿‡receiveMessageæ¥æ”¶åˆ°ä¸€ä¸ªçº¯æ–‡æœ¬æ¶ˆæ¯ï¼Œæ¶ˆæ¯å†…å®¹æ˜¯ï¼š" + message);
+		return "è¿™æ˜¯ConsumerListenerå¯¹è±¡çš„receiveMessageæ–¹æ³•çš„è¿”å›å€¼ã€‚";
 	}
-	
-	
-	public void receiveMessage(Email email) {
-		System.out.println("½ÓÊÕµ½Ò»¸ö°üº¬EmailµÄObjectMessage¡£");
-		System.out.println(email);
-	}
-	
-	public void receiveMessage(ObjectMessage message) throws JMSException {
-		System.out.println(message.getObject());
-	}
-	
 }

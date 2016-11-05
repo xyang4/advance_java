@@ -7,8 +7,8 @@ import com.tiantian.springintejms.service.ConsumerService;
 public class ConsumerServiceImpl implements ConsumerService {
 
 	public void receiveMessage(String message) throws JMSException {
-		System.out.println("------------------Ïû·ÑÕß½ÓÊÕÏûÏ¢-----------------");
-		System.out.println("-----------------Éú²úÕß·¢À´µÄÏûÏ¢ÊÇ£º" + message);
+		System.out.println("------------------æ¶ˆè´¹è€…æ¥æ”¶æ¶ˆæ¯-----------------");
+		System.out.println("-----------------ç”Ÿäº§è€…å‘æ¥çš„æ¶ˆæ¯æ˜¯ï¼š" + message);
 	}
 
 }

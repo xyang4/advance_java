@@ -6,12 +6,12 @@ import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
 public class DefaultResponseQueueListener implements MessageListener {
-
+	@Override
 	public void onMessage(Message message) {
 		if (message instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) message;
 			try {
-				System.out.println("DefaultResponseQueueListener接收到发送到defaultResponseQueue的一个文本消息，内容是：" + textMessage.getText());
+				System.out.println("DefaultResponseQueueListener鎺ユ敹鍒板彂閫佸埌defaultResponseQueue鐨勪竴涓枃鏈秷鎭紝鍐呭鏄細" + textMessage.getText());
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
