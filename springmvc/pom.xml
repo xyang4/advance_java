@@ -12,6 +12,7 @@
 		<org.springframework.version>4.3.2.RELEASE</org.springframework.version>
 		<org.activemq.version>5.5.1</org.activemq.version>
 		<com.alibaba.fasthson.version>1.1.41</com.alibaba.fasthson.version>
+		<org.apache.lucene.version>3.5.0</org.apache.lucene.version>
 	</properties>
 
 	<dependencies>
@@ -140,6 +141,15 @@
 			<artifactId>druid</artifactId>
 			<version>1.0.26</version>
 		</dependency>
+
+
+		<!-- lucene相关 BEGIN -->
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+			<version>${org.apache.lucene.version}</version>
+		</dependency>
+		<!-- lucene相关 END -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
