@@ -24,6 +24,12 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+/**
+ * @描述
+ * @date 2016年11月9日-下午10:13:22
+ * @author IBM
+ *
+ */
 public class IndexUtil {
 	protected String[] ids = { "1", "2", "3", "4", "5", "6" };
 	protected String[] emails = { "aa@itat.org", "bb@itat.org", "cc@cc.org", "dd@sina.org", "ee@zttc.edu",
@@ -55,7 +61,8 @@ public class IndexUtil {
 	public void createIndex() {
 		IndexWriter writer = null;
 		try {
-			writer = new IndexWriter(directory,new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35)));
+			writer = new IndexWriter(directory,
+					new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35)));
 			writer.deleteAll();
 			Document doc = null;
 			// 模拟邮件信息
@@ -95,8 +102,11 @@ public class IndexUtil {
 	public IndexSearcher getSearcher() {
 		try {
 			if (reader == null) {
+				// 默认按只读方式打开，用reader操作delete须更改
 				reader = IndexReader.open(directory, false);
 			} else {
+				// null if there are no changes; else, a new IndexReader
+				// instance which you must eventually close
 				IndexReader tr = IndexReader.openIfChanged(reader);
 				if (tr != null) {
 					reader.close();
@@ -127,7 +137,7 @@ public class IndexUtil {
 	}
 
 	/**
-	 * @描述  索引恢复
+	 * @描述 索引恢复
 	 * @date 2016年11月6日-下午10:41:01
 	 */
 	public void undeleteAll() {
@@ -141,6 +151,7 @@ public class IndexUtil {
 			e.printStackTrace();
 		}
 	}
+
 	public void forceDelete() {
 		IndexWriter writer = null;
 
@@ -159,6 +170,7 @@ public class IndexUtil {
 			}
 		}
 	}
+
 	public void merge() {
 		IndexWriter writer = null;
 		try {
@@ -180,14 +192,14 @@ public class IndexUtil {
 		}
 	}
 
-	public void delete() {
+	public void deleteByWriter(String field, String text) {
 		IndexWriter writer = null;
 		try {
 			writer = new IndexWriter(directory,
 					new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35)));
 			// 参数是一个选项，可以是一个Query-一些列的，也可以是一个term，term是一个精确查找的值
 			// 此时删除的文档并不会被完全删除，而是存储在一个回收站中的，可以恢复
-			writer.deleteDocuments(new Term("id", "2"));//(field ,text)
+			writer.deleteDocuments(new Term(field, text));
 			writer.commit();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -201,9 +213,9 @@ public class IndexUtil {
 		}
 	}
 
-	public void delete02() {
+	public void deleteByReader(String field, String value) {
 		try {
-			reader.deleteDocuments(new Term("id", "1"));
+			reader.deleteDocuments(new Term(field, value));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

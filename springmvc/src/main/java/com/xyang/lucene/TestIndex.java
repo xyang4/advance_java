@@ -21,13 +21,13 @@ public class TestIndex {
 	@Test
 	public void testDelete() {
 		IndexUtil iu = new IndexUtil();
-		iu.delete();
+		iu.deleteByWriter("id", "2");
 	}
 	
 	@Test
 	public void testDelete02() {
 		IndexUtil iu = new IndexUtil();
-		iu.delete02();
+		iu.deleteByReader("id", "1");
 	}
 	
 	@Test

@@ -33,7 +33,7 @@ public class SearcherUtil extends IndexUtil {
 		// directory = new RAMDirectory();
 		try {
 			createIndex();
-			directory = FSDirectory.open(new File(index_save_dir + "_1"));
+			directory = FSDirectory.open(new File(index_save_dir));
 			scores.put("itat.org", 2.0f);
 			scores.put("zttc.edu", 1.5f);
 		} catch (IOException e) {
@@ -77,6 +77,13 @@ public class SearcherUtil extends IndexUtil {
 		return null;
 	}
 
+	/**
+	 * @描述 精确查询
+	 * @date 2016年11月10日-上午12:15:11
+	 * @param field
+	 * @param name
+	 * @param num
+	 */
 	public void searchByTerm(String field, String name, int num) {
 		try {
 			IndexSearcher searcher = getSearcher();
@@ -127,6 +134,13 @@ public class SearcherUtil extends IndexUtil {
 		}
 	}
 
+	/**
+	 * @描述 前缀查询
+	 * @date 2016年11月10日-上午12:26:56
+	 * @param field
+	 * @param value
+	 * @param num
+	 */
 	public void searchByPrefix(String field, String value, int num) {
 		try {
 			IndexSearcher searcher = getSearcher();
@@ -144,6 +158,13 @@ public class SearcherUtil extends IndexUtil {
 		}
 	}
 
+	/**
+	 * @描述 通配符查询
+	 * @date 2016年11月10日-上午12:26:47
+	 * @param field
+	 * @param value
+	 * @param num
+	 */
 	public void searchByWildcard(String field, String value, int num) {
 		try {
 			IndexSearcher searcher = getSearcher();
@@ -162,6 +183,11 @@ public class SearcherUtil extends IndexUtil {
 		}
 	}
 
+	/**
+	 * @描述 多条件拼接查询
+	 * @date 2016年11月10日-上午12:30:58
+	 * @param num
+	 */
 	public void searchByBoolean(int num) {
 		try {
 			IndexSearcher searcher = getSearcher();
@@ -185,6 +211,11 @@ public class SearcherUtil extends IndexUtil {
 		}
 	}
 
+	/**
+	 * @描述 短语搜索
+	 * @date 2016年11月10日-上午12:25:41
+	 * @param num
+	 */
 	public void searchByPhrase(int num) {
 		try {
 			IndexSearcher searcher = getSearcher();
@@ -208,6 +239,11 @@ public class SearcherUtil extends IndexUtil {
 		}
 	}
 
+	/**
+	 * @描述 模糊查询
+	 * @date 2016年11月10日-上午12:26:36
+	 * @param num
+	 */
 	public void searchByFuzzy(int num) {
 		try {
 			IndexSearcher searcher = getSearcher();

@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.tiantian.springintejms.service.ProducerService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:spring/applicationContext.xml")
+@ContextConfiguration("classpath:spring/spring-jms.xml")
 public class ProducerConsumerTest {
 
 	@Autowired
