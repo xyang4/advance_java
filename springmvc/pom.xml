@@ -19,7 +19,8 @@
 		<org.mybatis.mybatis.version>3.4.1</org.mybatis.mybatis.version>
 		<mybatis-spring.version>1.2.2</mybatis-spring.version>
 		<druid.version>1.0.2</druid.version>
-		<slf4j.version>1.7.21</slf4j.version>
+		<!-- <slf4j.version>1.7.21</slf4j.version> -->
+		<slf4j.version>1.5.11</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<!-- db driver 设置 -->
 		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
@@ -145,11 +146,31 @@
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-all</artifactId>
 			<version>${org.activemq.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-pool</artifactId>
 			<version>${org.activemq.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- JMS相关 BEGIN -->
 
@@ -163,6 +184,11 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j.version}</version>
 		</dependency>
 		<!-- 日志相关 END -->
 

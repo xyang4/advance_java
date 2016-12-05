@@ -24,8 +24,9 @@ public class MessageDao {
 		List<Message> messageList = new ArrayList<Message>();
 		SqlSession sqlSession = null;
 		try {
+			// 1. 通过sqlSession执行SQL语句
 			sqlSession = dbAccess.getSqlSession();
-			// 通过sqlSession执行SQL语句
+			// 2.通过SQLSession获取动态代理的mapperProxy
 			MsgMapper imessage = sqlSession.getMapper(MsgMapper.class);
 			messageList = imessage.queryMessageList(parameter);
 		} catch (Exception e) {
@@ -58,6 +59,7 @@ public class MessageDao {
 		}
 		return messageList;
 	}
+
 	public int count(Message message) {
 		SqlSession sqlSession = null;
 		int result = 0;
@@ -69,7 +71,7 @@ public class MessageDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if(sqlSession != null) {
+			if (sqlSession != null) {
 				sqlSession.close();
 			}
 		}
