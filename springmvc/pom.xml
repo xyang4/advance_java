@@ -78,6 +78,7 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.9</version>
 		</dependency>
+
 		<!-- spring 相关BEGIN -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -192,7 +193,7 @@
 		</dependency>
 		<!-- 日志相关 END -->
 
-		<!-- 数据解析相关 -->
+		<!-- 数据解析相关 BEGIN -->
 		<dependency>
 			<groupId>edu.uci.ics</groupId>
 			<artifactId>crawler4j</artifactId>
@@ -208,7 +209,28 @@
 			<artifactId>javacsv</artifactId>
 			<version>2.0</version>
 		</dependency>
-
+		<!-- 数据解析相关 END -->
+		<!-- mybatis相关 -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.generator</groupId>
+			<artifactId>mybatis-generator-core</artifactId>
+			<version>1.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+		</dependency>
 		<!-- http请求相关 BEGIN -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -217,7 +239,7 @@
 		</dependency>
 		<!-- http请求相关 END -->
 
-		<!-- 邮件相关 -->
+		<!-- 邮件相关BEGIN -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
@@ -279,6 +301,7 @@
 			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- 邮件相关END -->
 	</dependencies>
 	<build>
 		<finalName>springmvc</finalName>
