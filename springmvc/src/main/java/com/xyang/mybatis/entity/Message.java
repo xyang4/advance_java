@@ -32,16 +32,6 @@ public class Message {
 	public String getCommand() {
 		return command;
 	}
-
-<<<<<<< HEAD
-	@Override
-	public String toString() {
-		return "Message [id=" + id + ", command=" + command + ", description="
-				+ description + ", content=" + content + "]";
-	}
-
-=======
->>>>>>> home
 	public void setCommand(String command) {
 		this.command = command;
 	}
