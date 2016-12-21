@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    <!-- 采用注释的方式配置bean -->
 	<context:annotation-config />
 	<!-- 包扫描开启 -->
-	<context:component-scan base-package="com.xyang.controller" annotation-config="true" />
+	<context:component-scan base-package="com.xyang.mybatis" annotation-config="true" />
 	<!-- 资源文件加载 -->
-	<context:property-placeholder location="config.properties" local-override="true" />
+<!-- 	<context:property-placeholder location="config/*.properties" local-override="true" /> -->
+	<!-- <import resource="spring/spring-solr.xml"/> -->
+	<import resource="spring/spring-mybatis.xml"/>
 </beans>

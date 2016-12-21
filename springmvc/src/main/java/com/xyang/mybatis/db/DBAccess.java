@@ -12,7 +12,8 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  * 访问数据库类
  */
 public class DBAccess {
-	private static String config_path = "mybatis/Configuration.xml";
+	private static final String config_path = "config/mybatis_configuration.xml";
+
 
 	public SqlSession getSqlSession() throws IOException {
 		// 通过配置文件获取数据库连接信息
