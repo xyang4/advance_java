@@ -1,19 +1,7 @@
 package com.xyang.pattern.structural;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
-import com.xyang.pattern.behavioral.observer.demo.Citizen;
-import com.xyang.pattern.behavioral.observer.demo.HuangPuCitizen;
-import com.xyang.pattern.behavioral.observer.demo.Policeman;
-import com.xyang.pattern.behavioral.observer.demo.TianHeCitizen;
-import com.xyang.pattern.behavioral.observer.demo.impl.HuangPuPoliceman;
-import com.xyang.pattern.behavioral.observer.demo.impl.TianHePoliceman;
-import com.xyang.pattern.behavioral.visitor.demo.Visitor;
-import com.xyang.pattern.behavioral.visitor.demo.impl.FloatElement;
-import com.xyang.pattern.behavioral.visitor.demo.impl.StringElement;
 import com.xyang.pattern.structural.adapter.demo.Adaptee;
 import com.xyang.pattern.structural.adapter.demo.Target;
 import com.xyang.pattern.structural.adapter.demo.impl.Adapter;
@@ -80,48 +68,5 @@ public class StructralItemTest {
 		Facade facade = new Facade();
 		facade.methodA();
 		facade.methodB();
-	}
-
-	/**
-	 * @描述 观察者模式<br>
-	 *     定义对象间的一种一对多的依赖关系,当一个对象的状态发生改变时,所有依赖于它的对象都得到通知并被自动更新。
-	 * 
-	 * @date 2017年2月7日-上午10:34:57
-	 */
-	@Test
-	public void observerTest() {
-		Policeman thPol = new TianHePoliceman();
-		Policeman hpPol = new HuangPuPoliceman();
-
-		Citizen citizen = new HuangPuCitizen(hpPol);
-		citizen.sendMessage("unnormal");
-		citizen.sendMessage("normal");
-
-		System.out.println("===========");
-
-		citizen = new TianHeCitizen(thPol);
-		citizen.sendMessage("normal");
-		citizen.sendMessage("unnormal");
-
-	}
-
-	@Test
-	public void vistorTest() {
-		Visitor visitor = new ConcreteVisitor();
-		StringElement se = new StringElement("abc");
-		se.accept(visitor);
-
-		FloatElement fe = new FloatElement(new Float(1.5));
-		fe.accept(visitor);
-		System.out.println("===========");
-		List result = new ArrayList();
-		result.add(new StringElement("abc"));
-		result.add(new StringElement("abc"));
-		result.add(new StringElement("abc"));
-		result.add(new FloatElement(new Float(1.5)));
-		result.add(new FloatElement(new Float(1.5)));
-		result.add(new FloatElement(new Float(1.5)));
-		visitor.visitCollection(result);
-
 	}
 }
