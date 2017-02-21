@@ -19,6 +19,7 @@ import com.xyang.pattern.creational.factoryMethod.export.Export2DBOperate;
 import com.xyang.pattern.creational.factoryMethod.export.ExportOperate;
 import com.xyang.pattern.creational.simplFactory.demo.Api;
 import com.xyang.pattern.creational.simplFactory.demo.Factory;
+import com.xyang.pattern.creational.singleton.demo.Singleton;
 
 /**
  * @描述 创建型类型相关模式测试
@@ -102,5 +103,28 @@ public class CreateiIemTest {
 		IOrderDetailDAO detailDAO = df.createOrderDetailDAO();
 		mainDAO.saveOrderMain();
 		detailDAO.saveOrderDetail();
+	}
+
+	/**
+	 * @描述 单例模式测试
+	 * @date 2017年2月9日-下午4:14:34
+	 * @throws Exception
+	 */
+	@Test
+	public void singletonTest() throws Exception {
+		final int code = Singleton.getSynInstance2().hashCode();
+		System.out.println(code);
+		for (int i = 0; i < Integer.MAX_VALUE; i++) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					int num = Singleton.getSynInstance2().hashCode();
+					Object obj ;
+					if (num != code) {
+						System.out.println(num);
+					}
+				}
+			}).start();
+		}
 	}
 }
