@@ -6,16 +6,14 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<!-- 加载基本配置文件 -->
-	<import resource="applicationContext_basic.xml" />
+	<!-- 资源文件加载 -->
+	<context:property-placeholder location="classpath:config/jdbc.properties" />
 
-	<!-- 配置业务层Beans -->
-	<bean id="accountService" class="com.xyang.transcation.impl.AccountServiceImpl">
-		<property name="accountDao" ref="accountDao" />
+	<!-- c3p0连接池配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="driverClass" value="${jdbc.driverClassName}" />
 	</bean>
-	<!-- 配置DAO层Beans -->
-	<bean id="accountDao" class="com.xyang.transcation.impl.AccountDaoImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
 </beans>

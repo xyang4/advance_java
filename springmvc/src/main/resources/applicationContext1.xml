@@ -8,14 +8,24 @@
 
 	<!-- 加载基本配置文件 -->
 	<import resource="applicationContext_basic.xml" />
-
-	<!-- 配置业务层Beans -->
-	<bean id="accountService" class="com.xyang.transcation.impl.AccountServiceImpl">
-		<property name="accountDao" ref="accountDao" />
-	</bean>
+	
 	<!-- 配置DAO层Beans -->
 	<bean id="accountDao" class="com.xyang.transcation.impl.AccountDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+	<!-- 配置业务层Beans -->
+	<bean id="accountService" class="com.xyang.transcation.impl.AccountServiceImpl1">
+		<property name="accountDao" ref="accountDao" />
+		<property name="transactionTemplate" ref="transactionTemplate"/>
+	</bean>
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 配置事务管理的模板 -->
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+
 
 </beans>

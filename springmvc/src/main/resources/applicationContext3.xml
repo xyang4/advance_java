@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop   
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+	<!-- 4 ： 基于aop配置的事务处理 
+		参考帖子:
+			http://blog.csdn.net/qh_java/article/details/51811533
+	-->
+	<!-- 加载基本配置文件 -->
+	<import resource="applicationContext_basic.xml" />
+
+	<!-- 配置业务层Beans -->
+	<bean id="accountService" class="com.xyang.transcation.impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao" />
+	</bean>
+	<!-- 配置DAO层Beans -->
+	<bean id="accountDao" class="com.xyang.transcation.impl.AccountDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 下面使用aop切面的方式来实现 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!--配置事务传播性，隔离级别以及超时回滚等问题 -->
+		<tx:attributes>
+			<tx:method name="transfer" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<!--配置事务切点 -->
+		<aop:pointcut id="services"
+			expression="execution(* com.xyang.transcation.IAccountService+.*(..))" />
+		<aop:advisor pointcut-ref="services" advice-ref="txAdvice" />
+	</aop:config>
+</beans>
