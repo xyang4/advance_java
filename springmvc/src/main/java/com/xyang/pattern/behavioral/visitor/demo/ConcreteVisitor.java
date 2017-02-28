@@ -27,12 +27,10 @@ public class ConcreteVisitor implements Visitor {
 			}
 		}
 	}
-
 	@Override
 	public void visitFloat(FloatElement floatE) {
 		System.out.println(floatE.getFe());
 	}
-
 	@Override
 	public void visitString(StringElement stringE) {
 		System.out.println(stringE.getSe());

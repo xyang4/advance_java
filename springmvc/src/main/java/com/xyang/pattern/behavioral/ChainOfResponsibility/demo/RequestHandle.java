@@ -8,5 +8,4 @@ package com.xyang.pattern.behavioral.ChainOfResponsibility.demo;
  */
 public interface RequestHandle {
 	public void handleRequest(Request request);
-
 }

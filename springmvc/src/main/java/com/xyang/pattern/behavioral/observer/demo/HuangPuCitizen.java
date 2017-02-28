@@ -12,7 +12,6 @@ public class HuangPuCitizen extends Citizen {
 		setPolicemen();
 		register(pol);
 	}
-
 	@Override
 	public void sendMessage(String help) {
 		setHelp(help);
@@ -22,5 +21,4 @@ public class HuangPuCitizen extends Citizen {
 			pol.action(this);
 		}
 	}
-
 }

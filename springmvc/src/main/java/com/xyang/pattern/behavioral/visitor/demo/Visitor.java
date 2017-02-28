@@ -16,9 +16,6 @@ import com.xyang.pattern.behavioral.visitor.demo.impl.StringElement;
  */
 public interface Visitor {
 	public void visitString(StringElement stringE);
-
 	public void visitFloat(FloatElement floatE);
-
 	public void visitCollection(Collection<?> collection);
-
 }

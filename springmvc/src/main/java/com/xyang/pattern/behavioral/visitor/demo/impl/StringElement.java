@@ -17,14 +17,11 @@ public class StringElement implements Visitable {
 	public StringElement(String se) {
 		this.se = se;
 	}
-
 	public String getSe() {
 		return this.se;
 	}
-
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.visitString(this);
 	}
-
 }

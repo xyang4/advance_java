@@ -13,7 +13,6 @@ public class TianHeCitizen extends Citizen {
 		setPolicemen();
 		register(pol);
 	}
-
 	@Override
 	public void sendMessage(String help) {
 		setHelp(help);

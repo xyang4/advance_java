@@ -62,15 +62,11 @@ public class BehavioralTest {
 	@Test
 	public void vistorTest() {
 		Visitor visitor = new ConcreteVisitor();
-
 		Visitable se = new StringElement("abc");
 		se.accept(visitor);
-
 		Visitable fe = new FloatElement(new Float(1.5));
 		fe.accept(visitor);
-
-		System.out.println("===========");
-
+		System.out.println("===========================");
 		List<Visitable> result = new ArrayList<>();
 		result.add(new StringElement("a"));
 		result.add(new StringElement("b"));
@@ -79,7 +75,6 @@ public class BehavioralTest {
 		result.add(new FloatElement(new Float(1.5)));
 		result.add(new FloatElement(new Float(2.5)));
 		visitor.visitCollection(result);
-
 	}
 
 	/**
@@ -106,6 +101,5 @@ public class BehavioralTest {
 		// 项目经理上理辞职请求
 		request = new DimissionRequest();
 		pm.handleRequest(request);
-
 	}
 }

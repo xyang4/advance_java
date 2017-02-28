@@ -9,5 +9,4 @@ package com.xyang.pattern.behavioral.observer.demo;
  */
 public interface Policeman {
 	void action(Citizen ci);
-
 }

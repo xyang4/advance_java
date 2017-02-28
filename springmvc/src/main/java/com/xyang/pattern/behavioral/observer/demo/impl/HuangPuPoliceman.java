@@ -23,7 +23,6 @@ public class HuangPuPoliceman implements Policeman {
 		if (help.equals("unnormal")) {
 			System.out.println("有犯罪行为, 黄埔警察出动!");
 		}
-
 	}
 
 }

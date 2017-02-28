@@ -15,6 +15,8 @@ public abstract class Citizen {
 
 	String help = "normal";
 
+	public abstract void sendMessage(String help);
+
 	public void setHelp(String help) {
 		this.help = help;
 	}
@@ -22,8 +24,6 @@ public abstract class Citizen {
 	public String getHelp() {
 		return this.help;
 	}
-
-	public abstract void sendMessage(String help);
 
 	public void setPolicemen() {
 		this.pols = new ArrayList<>();

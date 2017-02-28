@@ -7,13 +7,10 @@ package com.xyang.pattern.behavioral.ChainOfResponsibility.demo;
  *
  */
 public class TLRequestHandle implements RequestHandle {
-
 	RequestHandle rh;
-
 	public TLRequestHandle(RequestHandle rh) {
 		this.rh = rh;
 	}
-
 	@Override
 	public void handleRequest(Request request) {
 		if (request instanceof LeaveRequest) {

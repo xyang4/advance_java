@@ -17,11 +17,9 @@ public class FloatElement implements Visitable {
 	public FloatElement(Float fe) {
 		this.fe = fe;
 	}
-
 	public Float getFe() {
 		return this.fe;
 	}
-
 	@Override
 	public void accept(Visitor visitor) {
 		visitor.visitFloat(this);

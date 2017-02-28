@@ -146,6 +146,7 @@ public class CollectionsTest {
 		// 使用Java类库中java.util.Arrays类的静态方法asList()
 		List<String> l = Arrays.asList(str);
 		System.out.println(str);
+		System.out.println(str.getClass());
 		System.out.println(l);
 	}
 }
