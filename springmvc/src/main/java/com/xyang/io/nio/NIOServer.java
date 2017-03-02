@@ -10,19 +10,26 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 
+/**
+ * @描述 同步非阻塞式IO-一个请求一个线程<br>
+ * @date 2017年3月1日-下午5:40:30
+ * @author IBM
+ *
+ */
 public class NIOServer {
-	private static final int port = 8081;
+	private static final int port = 8080;
+
 	public static void main(String[] args) throws Exception {
-		// 创建ServerSocketChannel，监听8080端口
+
 		ServerSocketChannel ssc = ServerSocketChannel.open();
 		ssc.socket().bind(new InetSocketAddress(port));
-		// 设置为非阻塞模式
 		ssc.configureBlocking(false);
-		// 为ssc注册选择器
 		Selector selector = Selector.open();
 		ssc.register(selector, SelectionKey.OP_ACCEPT);
+
 		// 创建处理器
 		Handler handler = new Handler(1024);
+
 		while (true) {
 			// 等待请求，每次等待阻塞3s，超过3s后线程继续向下运行，如果传入0或者不传参数将一直阻塞
 			if (selector.select(3000) == 0) {
@@ -30,6 +37,7 @@ public class NIOServer {
 				continue;
 			}
 			System.out.println("处理请求。。。");
+
 			// 获取待处理的SelectionKey
 			Iterator<SelectionKey> keyIter = selector.selectedKeys().iterator();
 
@@ -58,16 +66,10 @@ public class NIOServer {
 		private int bufferSize = 1024;
 		private String localCharset = "UTF-8";
 
-		public Handler() {
-		}
-
 		public Handler(int bufferSize) {
 			this(bufferSize, null);
 		}
 
-		public Handler(String LocalCharset) {
-			this(-1, LocalCharset);
-		}
 		public Handler(int bufferSize, String localCharset) {
 			if (bufferSize > 0)
 				this.bufferSize = bufferSize;
@@ -78,7 +80,7 @@ public class NIOServer {
 		public void handleAccept(SelectionKey key) throws IOException {
 			SocketChannel sc = ((ServerSocketChannel) key.channel()).accept();
 			sc.configureBlocking(false);
-			sc.register(key.selector(), SelectionKey.OP_READ,ByteBuffer.allocate(bufferSize));
+			sc.register(key.selector(), SelectionKey.OP_READ, ByteBuffer.allocate(bufferSize));
 		}
 
 		public void handleRead(SelectionKey key) throws IOException {

@@ -9,12 +9,12 @@ public class Client {
 	public static void main(String args[]) {
 		String msg = "Client Data";
 		try {
-			// 创建一个Socket，跟本机的8080端口连接
+			// 1.创建一个Socket，跟本机的8080端口连接
 			Socket socket = new Socket("127.0.0.1", 8080);
-			// 使用Socket创建PrintWriter和BufferedReader进行读写数据
+			
+			// 2.使用Socket创建PrintWriter和BufferedReader进行读写数据
 			PrintWriter pw = new PrintWriter(socket.getOutputStream());
-			BufferedReader is = new BufferedReader(new InputStreamReader(
-					socket.getInputStream()));
+			BufferedReader is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			// 发送数据
 			pw.println(msg);
 			pw.flush();
