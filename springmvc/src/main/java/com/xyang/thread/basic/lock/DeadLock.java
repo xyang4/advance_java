@@ -1,4 +1,4 @@
-package com.xyang.thread.basic;
+package com.xyang.thread.basic.lock;
 
 /**
  * 死锁问题，在设计程序时就应该避免双方相互持有对方的锁的情况

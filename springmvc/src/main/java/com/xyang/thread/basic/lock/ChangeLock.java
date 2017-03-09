@@ -1,4 +1,4 @@
-package com.xyang.thread.basic;
+package com.xyang.thread.basic.lock;
 
 public class ChangeLock {
 	

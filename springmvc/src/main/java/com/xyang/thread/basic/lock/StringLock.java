@@ -1,4 +1,4 @@
-package com.xyang.thread.basic;
+package com.xyang.thread.basic.lock;
 
 /**
  * synchronized代码块对字符串的锁，注意String常量池的缓存功能

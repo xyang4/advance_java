@@ -18,6 +18,8 @@ import com.xyang.pattern.behavioral.observer.demo.Policeman;
 import com.xyang.pattern.behavioral.observer.demo.TianHeCitizen;
 import com.xyang.pattern.behavioral.observer.demo.impl.HuangPuPoliceman;
 import com.xyang.pattern.behavioral.observer.demo.impl.TianHePoliceman;
+import com.xyang.pattern.behavioral.template.demo.Template;
+import com.xyang.pattern.behavioral.template.demo.TemplateConcrete;
 import com.xyang.pattern.behavioral.visitor.demo.ConcreteVisitor;
 import com.xyang.pattern.behavioral.visitor.demo.Visitable;
 import com.xyang.pattern.behavioral.visitor.demo.Visitor;
@@ -101,5 +103,15 @@ public class BehavioralTest {
 		// 项目经理上理辞职请求
 		request = new DimissionRequest();
 		pm.handleRequest(request);
+	}
+
+	/**
+	 * @描述 定义算法骨架，将具体的实现延迟到子类
+	 * @date 2017年3月6日-下午1:45:25
+	 */
+	@Test
+	public void templateTest() {
+		Template temp = new TemplateConcrete();
+		temp.update();
 	}
 }
